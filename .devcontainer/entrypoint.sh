@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Fix ownership of bind-mounted workspace (Windows mounts enter as root)
+sudo chown -R designer:designer /design
+
 # Start virtual display
 Xvfb :1 -screen 0 "${VNC_RESOLUTION}x${VNC_COLOR_DEPTH}" &
 

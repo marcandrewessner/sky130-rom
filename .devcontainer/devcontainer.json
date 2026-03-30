@@ -1,7 +1,7 @@
 {
   "name": "ASIC Design",
   "build": {
-    "context": "..",
+    "context": ".",
     "dockerfile": "Dockerfile"
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=/design,type=bind,consistency=cached",
@@ -13,5 +13,6 @@
       "onAutoForward": "openBrowser"
     }
   },
-  "remoteUser": "designer"
+  "remoteUser": "designer",
+  "overrideCommand": false
 }

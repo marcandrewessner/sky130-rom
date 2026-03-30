@@ -51,8 +51,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install --no-cache-dir --break-system-packages \
         numpy \
         matplotlib \
+        ipython \
         cocotb \
-        cocotb-bus
+        cocotb-bus \
+        click
 
 # Create designer user with sudo rights
 RUN useradd -m -s /bin/bash designer \
@@ -81,6 +83,12 @@ USER designer
 
 # Configure XFCE panel launchers
 RUN /home/designer/setup-desktop.sh
+
+# Run the custom setup
+COPY --chown=designer:designer custom-setup.sh /home/designer/custom-setup.sh
+RUN chmod +x /home/designer/custom-setup.sh
+RUN /home/designer/custom-setup.sh
+
 
 WORKDIR /design
 
