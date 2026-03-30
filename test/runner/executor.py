@@ -1,7 +1,7 @@
 from pathlib import Path
 from .discovery import find_testbench, TestbenchNotFoundError
 from .sources import get_verilog_sources
-from .paths import TESTBENCH_ROOT, WAVES_ROOT, DUMPWAVE_OUT, DUMPWAVE_TEMPLATE
+from .paths import TESTMOD_ROOT, WAVES_ROOT, DUMPWAVE_OUT, DUMPWAVE_TEMPLATE
 
 from cocotb_tools.runner import get_runner
 
@@ -9,17 +9,27 @@ from cocotb_tools.runner import get_runner
 def run_test(testmodule, fst_wave=True):
   tb = find_testbench(testmodule)
   sources = get_verilog_sources()
+  build_args = []
+
   if fst_wave:
+    WAVES_ROOT.mkdir(parents=True, exist_ok=True)
     sources = sources + [build_dumpwave(testmodule, tb)]
-  # TODO: configure and invoke cocotb runner
-  print(f"running {testmodule} against {tb} with sources {sources}")
+    build_args += ["-s", "__dumpwave__"]
+
   runner = get_runner("icarus")
   runner.build(
-      sources=sources,
-      hdl_toplevel=tb,
-      always=True,
+    sources=sources,
+    hdl_toplevel=tb,
+    always=True,
+    timescale=("1ns", "1ns"),
+    build_args=build_args
   )
-  runner.test(hdl_toplevel=tb, test_module=testmodule)
+  runner.test(
+    hdl_toplevel=tb,
+    test_module=testmodule,
+    test_dir=TESTMOD_ROOT,
+    waves=True,
+  )
 
 def build_dumpwave(testmodule, testbench, depth=0):
   """Render the dumpwave template for testmodule and write it to /tmp/__dumpwave__.sv."""

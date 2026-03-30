@@ -9,10 +9,23 @@
   "forwardPorts": [8888],
   "portsAttributes": {
     "8888": {
-      "label": "noVNC Desktop",
-      "onAutoForward": "openBrowser"
+      "label": "noVNC Desktop"
     }
   },
   "remoteUser": "designer",
-  "overrideCommand": false
+  "overrideCommand": false,
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "albert.tabout",
+        "eirikpre.systemverilog",
+        "github.copilot-chat",
+        "ms-python.debugpy",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.vscode-python-envs",
+        "mshr-h.veriloghdl"
+      ]
+    }
+  }
 }

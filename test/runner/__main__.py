@@ -26,10 +26,8 @@ def run(testmodules):
 
 @cli.command()
 def list_tests():
-  """List all available tests (indexed and adressed by testmodules)"""
-  click.echo("Testmodules:")
-  for tm in get_test_modules():
-    click.echo(f">> {tm}")
+  """List all available testmodules as a space-separated list (make-compatible)"""
+  click.echo(" ".join(get_test_modules()))
 
 
 if __name__ == "__main__":

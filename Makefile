@@ -1,16 +1,21 @@
-.DEFAULT_TARGET: all
-.PHONY: all build test
+.DEFAULT_GOAL := all
+TEST_RUNNER   := cd test && python -m runner
+TESTS         := $(shell $(TEST_RUNNER) list-tests)
 
+.PHONY: all build test clean $(TESTS)
 
-# List out the
-
-all:
-	$(MAKE) test
-	$(MAKE) build
+all: test build
 
 build:
 	# pass build
 
-test:
-	# pass test all
+# Run all discovered testmodules
+test: $(TESTS)
 
+clean::
+	@rm -rf test/sim_build
+	@rm -f test/testmodules/results.xml
+
+# One target per testmodule — run with: make test_<name>
+$(TESTS):
+	$(TEST_RUNNER) run $@

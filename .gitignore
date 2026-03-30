@@ -1,3 +1,6 @@
 .claude
 __pycache__
+
+test/testmodules/results.xml
+test/sim_build
 *.fst
