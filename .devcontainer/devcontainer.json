@@ -1,0 +1,17 @@
+{
+  "name": "ASIC Design",
+  "build": {
+    "context": "..",
+    "dockerfile": "Dockerfile"
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/design,type=bind,consistency=cached",
+  "workspaceFolder": "/design",
+  "forwardPorts": [8888],
+  "portsAttributes": {
+    "8888": {
+      "label": "noVNC Desktop",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "remoteUser": "designer"
+}
