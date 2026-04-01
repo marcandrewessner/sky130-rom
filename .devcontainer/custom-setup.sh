@@ -9,4 +9,8 @@ echo "=========== START CUSTOM SETUP =============="
 #   package_1 \
 #   package_2
 
+# Reset the rights
+find /design -type f -exec chmod 644 {} \;
+find /design -type d -exec chmod 755 {} \;
+
 echo "============ END CUSTOM SETUP ==============="

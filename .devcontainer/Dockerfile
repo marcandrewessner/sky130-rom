@@ -12,6 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     HOME=/home/designer \
     USER=designer
 
+ENV PATH="$PATH:$HOME/.local/bin"
 
 # =============================================================
 # DESKTOP ENVIRONMENT  (root)
@@ -55,6 +56,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install NIX used by librelane
+# TODO
+
+
 # =============================================================
 # PYTHON RUNTIME  (root, system-wide)
 # Python 3.12 ships in the Ubuntu 24.04 default repos — no PPA
@@ -84,9 +89,10 @@ RUN pip3 install --no-cache-dir --break-system-packages \
     matplotlib \
     ipython \
     pytest \
+    click \
+    ciel \
     cocotb \
-    cocotb-bus \
-    click
+    cocotb-bus
 
 
 # =============================================================
@@ -113,6 +119,21 @@ RUN chmod +x \
     && chown -R designer:designer /home/designer
 
 
+
+# =============================================================
+# PDK SETUP
+# Install and setup the PDK using the fossi/ciel pdk manager
+# Setup librelane
+# =============================================================
+ENV PDK_ROOT=/pdk PDK=sky130 PDK_VERSION=7b70722e33c03fcb5dabcf4d479fb0822d9251c9
+RUN mkdir -p $PDK_ROOT && chown designer:designer $PDK_ROOT
+USER designer
+RUN ciel enable --pdk-family $PDK $PDK_VERSION
+USER root
+
+
+
+
 # =============================================================
 # DESKTOP CONFIGURATION  (designer)
 # Runs as the designer user to configure the XFCE panel and
@@ -120,25 +141,24 @@ RUN chmod +x \
 # user's home directory belongs here.
 # =============================================================
 USER designer
-
 RUN /home/designer/setup-desktop.sh
-
+USER root
 
 # =============================================================
 # CUSTOM SETUP  (designer)
 # Project-specific user-level tools: nvm, rustup, pipx packages,
 # dotfiles, shell aliases, etc. Edit custom-setup.sh to extend.
 # =============================================================
+USER designer
 RUN /home/designer/custom-setup.sh
-
+USER root
 
 # =============================================================
 # LAUNCH
 # The workspace is bind-mounted at /design at runtime.
 # Port 8888 serves the noVNC web desktop.
 # =============================================================
+USER designer
 WORKDIR /design
-
 EXPOSE 8888
-
 ENTRYPOINT ["/home/designer/entrypoint.sh"]
