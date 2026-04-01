@@ -1,0 +1,21 @@
+# Bootstrap using librelane's own flake-compat so no separate flake.lock is needed.
+let
+  librelaneSrc = builtins.fetchGit { url = "https://github.com/librelane/librelane"; };
+  lock = builtins.fromJSON (builtins.readFile "${librelaneSrc}/flake.lock");
+  flake-compat = fetchTarball {
+    url =
+      lock.nodes.flake-compat.locked.url
+        or "https://github.com/edolstra/flake-compat/archive/${lock.nodes.flake-compat.locked.rev}.tar.gz";
+    sha256 = lock.nodes.flake-compat.locked.narHash;
+  };
+  librelaneFlake = (import flake-compat { src = librelaneSrc; }).defaultNix;
+  pkgs = librelaneFlake.legacyPackages.${builtins.currentSystem};
+in
+pkgs.librelane-shell.override {
+  extra-packages = with pkgs; [ gnumake ];
+  extra-python-packages =
+    ps: with ps; [
+      cocotb
+      cocotb-bus
+    ];
+}
