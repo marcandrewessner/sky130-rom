@@ -11,11 +11,19 @@ let
   librelaneFlake = (import flake-compat { src = librelaneSrc; }).defaultNix;
   pkgs = librelaneFlake.legacyPackages.${builtins.currentSystem};
 in
-pkgs.librelane-shell.override {
-  extra-packages = with pkgs; [ gnumake ];
-  extra-python-packages =
-    ps: with ps; [
-      cocotb
-      cocotb-bus
-    ];
+pkgs.mkShell {
+  inputsFrom = [
+    (pkgs.librelane-shell.override {
+      extra-packages = with pkgs; [ gnumake ];
+      extra-python-packages =
+        ps: with ps; [
+          cocotb
+          cocotb-bus
+        ];
+    })
+  ];
+  shellHook = ''
+    export PDK_ROOT="$(pwd)/.pdk"
+    mkdir -p "$PDK_ROOT"
+  '';
 }

@@ -1,7 +1,9 @@
 .claude
 .vscode
+.pdk
 __pycache__
 
+/runs
 /test/testmodules/results.xml
 /test/sim_build
 *.fst
