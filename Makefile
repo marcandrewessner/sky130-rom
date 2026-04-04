@@ -7,7 +7,7 @@ TESTS         := $(shell $(TEST_RUNNER) list-tests)
 all: test build
 
 build:
-	# pass build
+	librelane --flow classic librelane_config.json
 
 # Run all discovered testmodules
 test: $(TESTS)
