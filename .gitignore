@@ -4,6 +4,6 @@
 __pycache__
 
 /runs
-/test/testmodules/results.xml
+/test/testmodules/results*.xml
 /test/sim_build
 *.fst

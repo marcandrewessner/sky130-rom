@@ -29,6 +29,7 @@ def run_test(testmodule, fst_wave=True):
     test_module=testmodule,
     test_dir=TESTMOD_ROOT,
     waves=True,
+    results_xml="/dev/null",
   )
 
 def build_dumpwave(testmodule, testbench, depth=0):
