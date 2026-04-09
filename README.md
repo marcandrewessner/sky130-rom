@@ -47,10 +47,13 @@ To pull in future template updates later: `git pull upstream main`.
 ### Run it
 
 ```sh
-nix-shell        # enter the environment — first run downloads all tools (~15 min)
-make test        # simulate and verify
-make build       # synthesize, place, route → GDSII
+nix-shell          # enter the environment — first run downloads all tools (~15 min)
+make init-env      # download and install the PDK (run once per clone)
+make test          # simulate and verify
+make build         # synthesize, place, route → GDSII
 ```
+
+`make init-env` uses `ciel enable` to download and install the configured PDK (sky130, pinned to the commit hash in the Makefile) into `.pdk/`. It is idempotent — once `.envinitialized` exists, subsequent runs are a no-op. Must be run inside the Nix shell where `ciel` and `PDK_ROOT` are available.
 
 Outputs land in `build/` (a symlink to the final outputs of the latest run).
 
@@ -81,6 +84,7 @@ Each `make build` creates a timestamped directory under `runs/`. The `LAST_RUN` 
 ## Makefile
 
 ```
+make init-env  # download and install the PDK via ciel (once per clone)
 make test      # run all cocotb testmodules
 make build     # run LibreLane, update runs/LAST_RUN
 make all       # test then build (default)

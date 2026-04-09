@@ -1,9 +1,20 @@
+# ============== ENVIRONMENT ==============
+.envinitialized
+
+# ============== TOOLS / IDE ==============
 .claude
 .vscode
-.pdk
-__pycache__
 
+# ============== PDK ==============
+.pdk
+
+# ============== BUILD OUTPUTS ==============
 /runs
-/test/testmodules/results*.xml
+
+# ============== SIMULATION ==============
 /test/sim_build
+/test/testmodules/results*.xml
 *.fst
+
+# ============== PYTHON ==============
+__pycache__
