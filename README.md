@@ -17,7 +17,34 @@ curl --proto '=https' --tlsv1.2 -fsSL https://artifacts.nixos.org/nix-installer 
 
 For full details see the [LibreLane Nix installation guide](https://librelane.readthedocs.io/en/stable/installation/nix_installation/index.html#nix-based-installation).
 
-## Quick start
+## Get started
+
+### Use this template
+
+```sh
+# 1. Create your repo and clone it
+git clone <your-repo-url> my-design && cd my-design
+
+# 2. Add this template as a read-only upstream (no push)
+git remote add upstream https://github.com/marcandrewessner/asic-template.git
+git remote set-url --push upstream DISABLED
+
+# 3. Pull the template history and merge it
+git pull upstream main --allow-unrelated-histories
+
+# 4. Push to your repo
+git push origin main
+```
+
+To pin to a specific template version instead of `main`:
+
+```sh
+git pull upstream v1.0.0    # replace with the desired tag
+```
+
+To pull in future template updates later: `git pull upstream main`.
+
+### Run it
 
 ```sh
 nix-shell        # enter the environment — first run downloads all tools (~15 min)
