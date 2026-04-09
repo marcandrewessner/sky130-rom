@@ -25,5 +25,9 @@ pkgs.mkShell {
   shellHook = ''
     export PDK_ROOT="$(pwd)/.pdk"
     mkdir -p "$PDK_ROOT"
+    if [ -z "$DISPLAY" ]; then
+      echo "WARNING: \$DISPLAY is not set — GUI tools like Magic will fail." >&2
+      echo "       Install XQuartz (brew install --cask xquartz), launch it, then re-enter the shell." >&2
+    fi
   '';
 }
